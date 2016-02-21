@@ -4,7 +4,7 @@
 
 Name:           %{?scl_prefix}%{pkg_name}
 Version:        1.1
-Release:        4.13%{?dist}
+Release:        4.14%{?dist}
 BuildArch:      noarch
 Summary:        Classes to manage report plugin executions with Maven 3
 
@@ -14,11 +14,11 @@ Source0:        http://repo1.maven.org/maven2/org/apache/maven/reporting/%{pkg_n
 
 BuildRequires:  %{?scl_prefix_java_common}javapackages-tools
 BuildRequires:  %{?scl_prefix_java_common}maven-local
-BuildRequires:  maven30-maven-invoker-plugin
-BuildRequires:  maven30-maven-shared
-BuildRequires:  maven30-maven-surefire-plugin
-BuildRequires:  maven30-maven-surefire-provider-junit
-BuildRequires:  maven30-plexus-containers-component-metadata
+BuildRequires:  %{?scl_prefix}maven-invoker-plugin
+BuildRequires:  %{?scl_prefix}maven-shared
+BuildRequires:  %{?scl_prefix}maven-surefire-plugin
+BuildRequires:  %{?scl_prefix}maven-surefire-provider-junit
+BuildRequires:  %{?scl_prefix}plexus-containers-component-metadata
 
 
 %description
@@ -35,7 +35,7 @@ The API documentation of %{pkg_name}.
 
 %prep
 %setup -qn %{pkg_name}-%{version}
-%{?scl:scl enable maven30 %{scl} - <<"EOF"}
+%{?scl:scl enable %{scl} - <<"EOF"}
 set -e -x
 # convert CR+LF to LF
 sed -i 's/\r//g' pom.xml src/main/java/org/apache/maven/reporting/exec/*
@@ -48,7 +48,7 @@ find -iname '*.java' -exec sed -i 's/org.eclipse.aether/org.sonatype.aether/g' '
 %{?scl:EOF}
 
 %build
-%{?scl:scl enable maven30 %{scl} - <<"EOF"}
+%{?scl:scl enable %{scl} - <<"EOF"}
 set -e -x
 # Test are skipped because there are errors with PlexusLogger
 # More info possibly here:
@@ -57,7 +57,7 @@ set -e -x
 %{?scl:EOF}
 
 %install
-%{?scl:scl enable maven30 %{scl} - <<"EOF"}
+%{?scl:scl enable %{scl} - <<"EOF"}
 set -e -x
 %mvn_install
 %{?scl:EOF}
@@ -72,6 +72,9 @@ set -e -x
 
 
 %changelog
+* Mon Jan 11 2016 Michal Srb <msrb@redhat.com> - 1.1-4.14
+- maven33 rebuild #2
+
 * Sat Jan 09 2016 Michal Srb <msrb@redhat.com> - 1.1-4.13
 - maven33 rebuild
 
