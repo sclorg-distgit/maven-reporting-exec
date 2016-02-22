@@ -4,7 +4,7 @@
 
 Name:           %{?scl_prefix}%{pkg_name}
 Version:        1.1
-Release:        4.14%{?dist}
+Release:        4.15%{?dist}
 BuildArch:      noarch
 Summary:        Classes to manage report plugin executions with Maven 3
 
@@ -41,9 +41,9 @@ set -e -x
 sed -i 's/\r//g' pom.xml src/main/java/org/apache/maven/reporting/exec/*
 
 # We have different sonatype groupId and java package name
-find -iname '*.java' -exec sed -i 's/org.eclipse.aether/org.sonatype.aether/g' '{}' ';'
+find -iname '*.java' -exec sed -i 's/org.sonatype.aether/org.eclipse.aether/g' '{}' ';'
 
-%pom_xpath_set "pom:groupId[text()='org.eclipse.aether']" org.sonatype.aether
+%pom_xpath_set "pom:groupId[text()='org.sonatype.aether']" org.eclipse.aether
 %pom_remove_plugin org.apache.maven.plugins:maven-enforcer-plugin
 %{?scl:EOF}
 
@@ -72,6 +72,9 @@ set -e -x
 
 
 %changelog
+* Mon Jan 18 2016 Michal Srb <msrb@redhat.com> - 1.1-4.15
+- Switch to Eclipse Aether
+
 * Mon Jan 11 2016 Michal Srb <msrb@redhat.com> - 1.1-4.14
 - maven33 rebuild #2
 
