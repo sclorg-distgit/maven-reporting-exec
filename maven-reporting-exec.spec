@@ -4,7 +4,7 @@
 
 Name:           %{?scl_prefix}%{pkg_name}
 Version:        1.1
-Release:        4.15%{?dist}
+Release:        4.17%{?dist}
 BuildArch:      noarch
 Summary:        Classes to manage report plugin executions with Maven 3
 
@@ -13,7 +13,7 @@ URL:            http://maven.apache.org/shared/maven-reporting-exec/
 Source0:        http://repo1.maven.org/maven2/org/apache/maven/reporting/%{pkg_name}/%{version}/%{pkg_name}-%{version}-source-release.zip
 
 BuildRequires:  %{?scl_prefix_java_common}javapackages-tools
-BuildRequires:  %{?scl_prefix_java_common}maven-local
+BuildRequires:  %{?scl_prefix}maven-local
 BuildRequires:  %{?scl_prefix}maven-invoker-plugin
 BuildRequires:  %{?scl_prefix}maven-shared
 BuildRequires:  %{?scl_prefix}maven-surefire-plugin
@@ -44,6 +44,7 @@ sed -i 's/\r//g' pom.xml src/main/java/org/apache/maven/reporting/exec/*
 find -iname '*.java' -exec sed -i 's/org.sonatype.aether/org.eclipse.aether/g' '{}' ';'
 
 %pom_xpath_set "pom:groupId[text()='org.sonatype.aether']" org.eclipse.aether
+%pom_change_dep org.sonatype.sisu:sisu-inject-plexus org.eclipse.sisu:org.eclipse.sisu.plexus
 %pom_remove_plugin org.apache.maven.plugins:maven-enforcer-plugin
 %{?scl:EOF}
 
@@ -72,6 +73,12 @@ set -e -x
 
 
 %changelog
+* Thu Feb 11 2016 Michal Srb <msrb@redhat.com> - 1.1-4.17
+- Fix FTBFS
+
+* Mon Feb 08 2016 Michal Srb <msrb@redhat.com> - 1.1-4.16
+- Fix BR on maven-local & co.
+
 * Mon Jan 18 2016 Michal Srb <msrb@redhat.com> - 1.1-4.15
 - Switch to Eclipse Aether
 
